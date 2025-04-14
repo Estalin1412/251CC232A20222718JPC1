@@ -20,6 +20,8 @@ public class Persona {
         this.genero = genero;
     }
 
+    
+    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

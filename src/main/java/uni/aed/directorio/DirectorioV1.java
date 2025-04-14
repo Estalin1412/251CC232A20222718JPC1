@@ -5,15 +5,25 @@ import uni.aed.model.Persona;
 import uni.aed.search.SearchObject;
 import uni.aed.sort.SortObject;
 
+import java.util.Scanner;
+
 public class DirectorioV1 implements Directorio{
     private static final int  DEFAULT_SIZE = 25;
     private static final int  NOT_FOUND    = -1;
     private Persona[]   entry;
     private int        count;
+    private SortObject sortObj;       // Objeto para ordenamiento
+    private Scanner scanner;  
     
     public DirectorioV1( )
     {
         this( DEFAULT_SIZE );
+        entry = new Persona[25]; 
+        count = 0;
+        sortObj = new SortObject();
+        scanner = new Scanner(System.in);
+        
+
     }
 
     public DirectorioV1( int size )
@@ -36,6 +46,11 @@ public class DirectorioV1 implements Directorio{
                     result=result + ", " +p.toString() ;
         return result;
     }    
+    
+    public static void main(String[] args) {
+        DirectorioV1 directorio = new DirectorioV1();
+        directorio.mostrarMenu();
+    }
     
     public void add( Persona newPersona )
     {
@@ -176,5 +191,92 @@ public class DirectorioV1 implements Directorio{
         return result;
     }
 
+        /**
+     * Registra una persona en el directorio
+     * @param persona Persona a registrar
+     */
+    public void registrarPersona(Persona persona) {
+        if (count < entry.length) {
+            entry[count++] = persona;
+            System.out.println("Persona registrada");
+        } else {
+            System.out.println("Directorio lleno.");
+        }
+    }
+    
+    public void ordenarHeapSort() {
+        if (count > 0) {
+            // Crear un arreglo temporal con el número exacto de personas
+            Comparable[] temp = new Comparable[count];
+            for (int i = 0; i < count; i++) {
+                temp[i] = entry[i];
+            }
+            
+            sortObj.heapSort(temp);
+            
+            // Copiar de vuelta al arreglo de personas
+            for (int i = 0; i < count; i++) {
+                entry[i] = (Persona) temp[i];
+            }
+            
+            System.out.println("Directorio ordenado");
+        } else {
+            System.out.println("El directorio esta vacio");
+        }
+    }
+    
+        public void visualizarDirectorio() {
+        if (count> 0) {
+            System.out.println("Directorio de Personas:");
+            for (int i = 0; i < count; i++) {
+                System.out.println((i + 1) + ". " + entry[i]);
+            }
+        } else {
+            System.out.println("vacío.");
+        }
+    }
+        
+    public void mostrarMenu() {
+    int opcion;
+        
+        do {
+            System.out.println("\n----- MENU DIRECTORIO -----");
+            System.out.println("1. Registrar Persona en Directorio");
+            System.out.println("2. Ordenar Personas con método HeapSort");
+            System.out.println("3. Visualizar Directorio");
+            System.out.println("0. Salir");
+            System.out.print("Ingrese una opcion: ");
+            
+            opcion = scanner.nextInt();
+            scanner.nextLine();  // Consumir el salto de línea
+            
+            switch (opcion) {
+                case 1:
+                    System.out.print("Ingrese el nombre: ");
+                    String nombre = scanner.nextLine();
+                    System.out.print("Ingrese el edad: ");
+                    int edad = scanner.nextInt();
+                    System.out.print("genero: ");
+                    String genero = scanner.nextLine();
+                    registrarPersona(new Persona(nombre,edad));
+                    break;
+                case 2:
+                    ordenarHeapSort();
+                    break;
+                case 3:
+                    visualizarDirectorio();
+                    break;
+                case 0:
+                    System.out.println("Saliendo del programa...");
+                    break;
+                default:
+                    System.out.println("Opcion invalida. Intente nuevamente.");
+            }
+        } while (opcion != 0);
+    }
     
 }
+
+
+///////////////////////////////////////////////////////////
+

@@ -1,4 +1,6 @@
 package uni.aed.sort;
+
+
 public class Sort {
     private Integer[] X;
     private int nInt=0;//#ntercambios
@@ -205,4 +207,77 @@ public class Sort {
         return "{"+str.toString()+"} nInt= "+ nInt +", nComp= "+nComp +", tEjec= "+tEjec+ "(ns)";        
     }
     
+    public void quickSort(int arr[], int inf, int sup){
+        if(inf >= sup-1) return;
+        int i=inf-1, j=inf;
+        int m=(inf+sup)/2;
+        int pivot = arr[m];
+        
+        int a = arr[m];
+        arr[m]=arr[sup];
+        arr[sup]=a;
+        
+        while(j<sup){
+            if(arr[j] <= pivot){
+                i++;
+                a = arr[i];
+                arr[i]=arr[j];
+                arr[j]=a;
+            }
+            j++;
+        }
+        m = i+1;
+        a=arr[m];
+        arr[m]=arr[sup];
+        quickSort(arr,inf,m-1);
+        quickSort(arr,m,sup);
+        
+    }
+
+
+    public void heapSort(Comparable[] array) {
+        int n = array.length;
+        
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(array, n, i);
+        }
+        
+        for (int i = n - 1; i > 0; i--) {
+            Comparable temp = array[0];
+            array[0] = array[i];
+            array[i] = temp;
+            
+            heapify(array, i, 0);
+        }
+    }
+    
+    
+    private void heapify(Comparable[] array, int n, int i) {
+        int largest = i;  
+        int left = 2 * i + 1;  
+        int right = 2 * i + 2;
+        
+        if (left < n && array[left].compareTo(array[largest]) > 0) {
+            largest = left;
+        }
+        
+        if (right < n && array[right].compareTo(array[largest]) > 0) {
+            largest = right;
+        }
+        
+        if (largest != i) {
+            Comparable swap = array[i];
+            array[i] = array[largest];
+            array[largest] = swap;
+            
+            heapify(array, n, largest);
+        }
+    }
+    
+    
 }
+
+
+
+
+
